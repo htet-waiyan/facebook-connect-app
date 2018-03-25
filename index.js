@@ -14,7 +14,12 @@ app.use(passport.initialize());
     callbackURL : 'https://facebook-connect-app.herokuapp.com/callback'
   },
     function(accessToken,refreshToken,userProfile,done){
-      return done(null,userProfile);
+      const userData = {
+        user : userProfile,
+        accessToken,
+        refreshToken
+      }
+      return done(null,userData);
     }
 ))
 
@@ -26,7 +31,7 @@ const permissions = ['email','read_insights','manage_pages','pages_show_list'];
 
 app.get('/connect',passport.authenticate('facebook',{session: false}));
 app.get('/callback',passport.authenticate('facebook',{failuredRedirect:'/',session:false,scope: permissions}),(req,res) => {
-  res.status(200).json({message:'success',data:req.user});
+  res.status(200).json({message:'success',data:{user: req.user, account: req.account}});
 })
 app.get('/logout',(req,res)=> {
   req.logout();
