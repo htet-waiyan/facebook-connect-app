@@ -22,8 +22,8 @@ app.get('/',(req,res,next)=> {
   res.sendFile('index.html',{root:__dirname+'/'});
 })
 
-app.get('/connect',passport.authenticate('facebook'));
-app.get('/callback',passport.authenticate('facebook',{failuredRedirect:'/'}),(req,res) => {
+app.get('/connect',passport.authenticate('facebook',{session: false}));
+app.get('/callback',passport.authenticate('facebook',{failuredRedirect:'/',session:false}),(req,res) => {
   res.status(200).json({message:'success',data:req.user});
 })
 
