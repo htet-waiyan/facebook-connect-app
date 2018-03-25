@@ -11,7 +11,7 @@ app.use(passport.initialize());
   passport.use(new FacebookStrategy({
     clientID : process.env.FB_APP_ID,
     clientSecret : process.env.FB_APP_SECRET,
-    callbackURL : 'http://localhost:3000/'
+    callbackURL : 'https://facebook-connect-app.herokuapp.com/'
   },
     function(accessToken,refreshToken,userProfile,done){
       return done(null,userProfile);
