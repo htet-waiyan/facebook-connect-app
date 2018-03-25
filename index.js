@@ -22,9 +22,15 @@ app.get('/',(req,res,next)=> {
   res.sendFile('index.html',{root:__dirname+'/'});
 })
 
+const permissions = ['email','read_insights','manage_pages','pages_show_list'];
+
 app.get('/connect',passport.authenticate('facebook',{session: false}));
-app.get('/callback',passport.authenticate('facebook',{failuredRedirect:'/',session:false}),(req,res) => {
+app.get('/callback',passport.authenticate('facebook',{failuredRedirect:'/',session:false,scope: permissions}),(req,res) => {
   res.status(200).json({message:'success',data:req.user});
+})
+app.get('/logout',(req,res)=> {
+  req.logout();
+  res.redirect('/');
 })
 
 const server = http.createServer(app).listen(process.env.PORT||3000);
